@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, My Love ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3, #ffc3a0);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.card {
+    width: 100%;
+    max-width: 430px;
+    padding: 35px 22px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 15px 45px rgba(100, 0, 40, 0.2);
+    animation: appear 1.2s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.heart {
+    font-size: 55px;
+    animation: heartbeat 1.2s infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+h1 {
+    font-size: clamp(28px, 7vw, 40px);
+    margin-bottom: 15px;
+    text-shadow: 0 3px 12px rgba(130, 0, 50, 0.2);
+}
+
+.subtitle {
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.cake {
+    font-size: 85px;
+    margin: 15px 0;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.message {
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 20px 0;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    padding: 14px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+.surprise-btn {
+    background: white;
+    color: #ff477e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.surprise-btn:hover {
+    background: #fff0f5;
+    transform: translateY(-3px);
+}
+
+#surprise {
+    display: none;
+    margin-top: 25px;
+    line-height: 1.8;
+    font-size: 17px;
+    animation: appear 1s ease;
+}
+
+.signature {
+    margin-top: 25px;
+    font-size: 15px;
+    opacity: 0.95;
+}
+
+.floating-heart {
+    position: fixed;
+    bottom: -40px;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    z-index: 1;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+@media (max-width: 380px) {
+    .card {
+        padding: 28px 16px;
+    }
+
+    .message {
+        font-size: 15px;
+    }
+
+    .cake {
+        font-size: 70px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+    <div class="card">
+
+        <div class="heart">❤️</div>
+
+        <!-- Change her name here -->
+        <h1>Happy Birthday,<br>My Love! 🎂</h1>
+
+        <p class="subtitle">
+            Today is all about you, princess! 👑💕
+        </p>
+
+        <div class="cake">🎂</div>
+
+        <div class="message">
+            Happy Birthday to the most special girl in my life! 💖
+            <br><br>
+            You make ordinary days beautiful and every moment
+            more meaningful. Your smile brings happiness,
+            and your presence makes life brighter.
+            <br><br>
+            May your birthday be filled with love, laughter,
+            beautiful memories, and all the happiness you deserve. 🌹
+        </div>
+
+        <button class="surprise-btn" onclick="showSurprise()">
+            🎁 Open Your Surprise
+        </button>
+
+        <div id="surprise">
+            <h2>💌 A Little Message for You</h2>
+
+            You are one of the most beautiful parts of my life.
+            I hope this new year brings you countless reasons
+            to smile, wonderful adventures, and dreams that come true.
+            <br><br>
+            No matter how many birthdays pass, I hope you always
+            feel appreciated, loved, and celebrated. ❤️
+            <br><br>
+            <strong>Happy Birthday, My Favorite Person! 🥹💕</strong>
+        </div>
+
+        <div class="signature">
+            Made with ❤️ just for you
+            <br>
+            Forever sending you smiles 🌷
+        </div>
+
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+let pieces = [];
+let animationId;
+let confettiUntil = 0;
+
+function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function burstConfetti() {
+    const colors = [
+        "#ff1744", "#ffeb3b", "#ffffff",
+        "#ff80ab", "#7c4dff", "#00e5ff",
+        "#69f0ae", "#ff9100"
+    ];
+
+    const count = window.innerWidth < 500 ? 130 : 220;
+
+    for (let i = 0; i < count; i++) {
+        pieces.push({
+            x: Math.random() * window.innerWidth,
+            y: -20 - Math.random() * window.innerHeight * 0.4,
+            size: Math.random() * 7 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speed: Math.random() * 3 + 2,
+            drift: Math.random() * 3 - 1.5,
+            rotation: Math.random() * 360,
+            spin: Math.random() * 8 - 4
+        });
+    }
+
+    confettiUntil = performance.now() + 4500;
+
+    if (!animationId) {
+        animateConfetti();
+    }
+}
+
+function animateConfetti(now) {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    pieces.forEach(p => {
+        p.x += p.drift;
+        p.y += p.speed;
+        p.rotation += p.spin;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+        ctx.restore();
+    });
+
+    pieces = pieces.filter(p => p.y < window.innerHeight + 30);
+
+    if (pieces.length > 0 || now < confettiUntil) {
+        animationId = requestAnimationFrame(animateConfetti);
+    } else {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        animationId = null;
+    }
+}
+
+function showSurprise() {
+    const surprise = document.getElementById("surprise");
+
+    surprise.style.display = "block";
+    burstConfetti();
+
+    surprise.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+}
+
+// Floating hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "floating-heart";
+
+    const hearts = ["❤️", "💕", "💗", "💖", "💘", "🌸"];
+    heart.textContent = hearts[
+        Math.floor(Math.random() * hearts.length)
+    ];
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    heart.style.animationDuration = Math.random() * 4 + 5 + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 9500);
+}
+
+setInterval(createHeart, 650);
+
+// Birthday celebration when the page opens
+window.addEventListener("load", () => {
+    setTimeout(burstConfetti, 400);
+});
+</script>
+
+</body>
+</html>
